@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <style>
+            .imessage {
+                background-color: #fff;
+                border-radius: 0.25rem;
+                display: flex;
+                flex-direction: column;
+                font-family: "SanFrancisco";
+                font-size: 1.25rem;
+                margin: 0 auto 1rem;
+                max-width: 800px;
+                padding: 0.5rem 1.5rem;
+            }
+            
+            .imessage p {
+                border-radius: 1.15rem;
+                line-height: 1.25;
+                max-width: 75%;
+                padding: 0.5rem .875rem;
+                position: relative;
+                word-wrap: break-word;
+            }
+            
+            .imessage p::before,
+            .imessage p::after {
+                bottom: -0.1rem;
+                content: "";
+                height: 1rem;
+                position: absolute;
+            }
+            
+            p.from-me {
+                align-self: flex-end;
+                background-color: #248bf5;
+                color: #fff; 
+            }
+            
+            p.from-me::before {
+                border-bottom-left-radius: 0.8rem 0.7rem;
+                border-right: 1rem solid #248bf5;
+                right: -0.35rem;
+                transform: translate(0, -0.1rem);
+            }
+            
+            p.from-me::after {
+                background-color: #fff;
+                border-bottom-left-radius: 0.5rem;
+                right: -40px;
+                transform:translate(-30px, -2px);
+                width: 10px;
+            }
+            
+            p[class^="from-"] {
+                margin: 0.5rem 0;
+                width: fit-content;
+            }
+            
+            p.from-me ~ p.from-me {
+                margin: 0.25rem 0 0;
+            }
+            
+            p.from-me ~ p.from-me:not(:last-child) {
+                margin: 0.25rem 0 0;
+            }
+            
+            p.from-me ~ p.from-me:last-child {
+                margin-bottom: 0.5rem;
+            }
+            
+            p.from-them {
+                align-items: flex-start;
+                background-color: #e5e5ea;
+                color: #000;
+            }
+            
+            p.from-them:before {
+                border-bottom-right-radius: 0.8rem 0.7rem;
+                border-left: 1rem solid #e5e5ea;
+                left: -0.35rem;
+                transform: translate(0, -0.1rem);
+            }
+            
+            p.from-them::after {
+                background-color: #fff;
+                border-bottom-right-radius: 0.5rem;
+                left: 20px;
+                transform: translate(-30px, -2px);
+                width: 10px;
+            }
+            
+            p[class^="from-"].emoji {
+                background: none;
+                font-size: 2.5rem;
+            }
+            
+            p[class^="from-"].emoji::before {
+                content: none;
+            }
+            
+            .no-tail::before {
+                display: none;
+            }
+            
+            .margin-b_none {
+                margin-bottom: 0 !important;
+            }
+            
+            .margin-b_one {
+                margin-bottom: 1rem !important;
+            }
+            
+            .margin-t_one {
+                margin-top: 1rem !important;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            /* general styling */
+            @font-face {
+                font-family: "SanFrancisco";
+                src:
+                url("https://cdn.rawgit.com/AllThingsSmitty/fonts/25983b71/SanFrancisco/sanfranciscodisplay-regular-webfont.woff2") format("woff2"),
+                url("https://cdn.rawgit.com/AllThingsSmitty/fonts/25983b71/SanFrancisco/sanfranciscodisplay-regular-webfont.woff") format("woff");
+            }
+            
+            body {  
+                font-family: -apple-system, 
+                BlinkMacSystemFont, 
+                "Segoe UI", 
+                Roboto, 
+                Oxygen-Sans, 
+                Ubuntu, 
+                Cantarell, 
+                "Helvetica Neue", 
+                sans-serif;
+                font-weight: normal;
+                margin: 0;
+            }
+            
+            .container {
+                margin: 0 auto;
+                max-width: 600px;
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-weight: normal;
+                margin-bottom: 0.5rem;
+            }
+            
+            h2 {
+                border-bottom: 1px solid #e5e5ea;
+                color: #666;
+                font-weight: normal;
+                margin-top: 0;
+                padding-bottom: 1.5rem;
+            }
+            
+            .comment {
+                color: #222;
+                font-size: 1.25rem;
+                line-height: 1.5;
+                margin-bottom: 1.25rem;
+                max-width: 100%;
+                padding: 0;
+            }
+            
+            @media screen and (max-width: 800px) {
+                body {
+                    margin: 0 0.5rem;
+                }
+                
+                .container {
+                    padding: 0.5rem;
+                }
+                
+                .imessage {
+                    font-size: 1.05rem;
+                    margin: 0 auto 1rem;
+                    max-width: 600px;
+                    padding: 0.25rem 0.875rem;
+                    border: 0px;
+                }
+                
+                .imessage p {
+                    margin: 0.5rem 0;
+                }
+            }
+        </style>
+
+        <script>
+            function convertToGenZSlang(text) {
+                
+                const slangDictionary = {
+                    "hello": "yo",
+                    "hi": "yo",
+                    "hey": "yo",
+                    "phone": "ringz",
+                    "number": "num",
+                    "goodbye": "peace out",
+                    "friend": "homie",
+                    "amazing": "lit",
+                    "hot": "lit",
+                    "fire": "lit",
+                    "cool": "dope",
+                    "money": "bands",
+                    "excited": "hyped",
+                    "serious": "no cap",
+                    "understand": "get it",
+                    "crazy": "our of pocket",
+                    "funny": "savage",
+                    "outfit": "fit",
+                    "cloths": "drip",
+                    "shoes": "kicks",
+                    "very": "mad",
+                    "awkward": "sus",
+                    "relationship": "ship",
+                    "party": "rager",
+                    "impressive": "fire",
+                    "disrespect": "throw shade",
+                    "disappoint": "ghost",
+                    "weird": "weird flex",
+                    "lie": "cap",
+                    "tired": "dead",
+                    "angry": "big mad",
+                    "annoyed": "pressed",
+                    "people": "peeps",
+                    "happy": "vibing",
+                    "beautiful": "gorgeous",
+                    "handsome": "drip",
+                    "boring": "dry",
+                    "eat": "munch",
+                    "listen": "vibe to",
+                    "sorry": "my bad",
+                    "because": "cuz",
+                    "understand": "get it",
+                    "talk": "spill",
+                    "dance": "hit the woah",
+                    "love": "stan",
+                    "jealous": "big salty",
+                    "awesome": "lit af",
+                    "ugly": "yikes",
+                    "cool": "chill",
+                    "good": "gucci",
+                    "bad": "busted",
+                    "perfect": "on fleek",
+                    "insane": "straight up wildin'",
+                    "fast": "zoom",
+                    "hungry": "starving",
+                    "drink": "sip",
+                    "food": "grub",
+                    "sleep": "crash",
+                    "late": "lagging",
+                    "congrats": "props",
+                    "great": "GOAT",
+                    "friends": "squad",
+                    "work": "grind",
+                    "talking": "chatting",
+                    "seriously": "fr fr",
+                    "impossible": "no shot",
+                    "leave": "bounce",
+                    "whatever": "whatevs",
+                    "average": "mid",
+                    "charming": "rizz",
+                    "tired": "cooked",
+                    "boss": "sigma",
+                    "noah": "broah",
+                    "marry": "wedup",
+                    "movie": "flic",
+                    "movies": "flix",
+                    "money": "coin",
+                    "man": "coin",
+                    "dark": "dank",
+                    "dead": "ded",
+                    "delusional": "delulu",
+                    "grose": "ick",
+                    "mowing": "mewn",
+                    "mow": "mew",
+                    "defeated": "owned",
+                    "warnings": "red flags",
+                    "bitter": "salty",
+                    "resentful": "salty",
+                    "controlling": "karren",
+                    "pursuing": "simping",
+                    "amazing": "slaps",
+                    "killing": "slays",
+                    "gossip": "tea",
+                    "throw": "YEET",
+                    "gay": "zesty",
+                    "delisouse": "bussin",
+                    "aggresive": "BDE",
+                    "boring": "basic",
+                };
+                
+                const phraseReplacements = [
+                    { original: "what's up", slang: "what's good" },
+                    { original: "how are you", slang: "how u vibing" },
+                    { original: "I am going to", slang: "I'm finna" },
+                    { original: "I have to", slang: "I gotta" },
+                    { original: "do you want to", slang: "tryna" },
+                    { original: "are you ready", slang: "you down" },
+                    { original: "let's go", slang: "let's dip" },
+                    { original: "are you serious", slang: "you for real" },
+                    { original: "I don't know", slang: "IDK" },
+                    { original: "for real", slang: "fr fr" },
+                    { original: "as soon as possible", slang: "ASAP" },
+                    { original: "just kidding", slang: "JK" },
+                    { original: "I'm joking", slang: "I'm capping" },
+                    { original: "no way", slang: "no shot" },
+                    { original: "I love you", slang: "I stan u" },
+                    { original: "wait a minute", slang: "hold up" },
+                    { original: "to marry", slang: "lock down" },
+                    { original: "so cool", slang: "so sigma" },
+                    { original: "the greatest", slang: "GOAT" },
+                    { original: "hot dog", slang: "glizzy" },
+                    { original: "is better", slang: "hits different" },
+                    { original: "one of my followers", slang: "oomf" },
+                    { original: "bad relationship", slang: "situationship" },
+                    { original: "they won", slang: "they understood the assignment" },
+                    { original: "talking to much", slang: "yapping" },
+                    { original: "as hell", slang: "asl" },
+                    { original: "great song", slang: "banger" },
+                    { original: "great movie", slang: "banger" },
+                    { original: "your right", slang: "based" },
+                    { original: "best friend", slang: "bestie" },
+                    { original: "tell me the truth", slang: "bffr" },
+                    { original: "got to go", slang: "g2g" },
+                    { original: "have to go", slang: "g2g" },
+                    { original: "as fuck", slang: "af" },
+                    { original: "always has been", slang: "<img src=\"https://meme-templates.com/uploads/1666324434.png\">" },
+                    { original: "rick roll", slang: '<iframe src="https://giphy.com/embed/Ju7l5y9osyymQ" width="480" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>' },
+                ];
+                
+                const shortenings = {
+                    "you": "u",
+                    "are": "r",
+                    "your": "ur",
+                    "and": "&",
+                    "for": "4",
+                    "to": "2",
+                    "be": "b",
+                    "see": "c",
+                    "please": "plz",
+                    "thanks": "thx",
+                    "that": "dat",
+                    "this": "dis",
+                    "hashtag": "#",
+                };
+                
+                const emojis = [
+                    "🔥", "💀", "😂", "😭", "✨", "😎", "🤯", "😤", "💅", "👀", "👌", "🙌", "🤙", "😈", "💔", "🤑", "💸", "🤡", "👑"
+                ];
+                
+                const interjections = [
+                    "sheesh", "fr fr", "no cap", "bet", "periodt", "slay", "yeet", "on god", "bruh", "fam", "sksksk", "yeet", "lowkey", "Skibidi", "periodt"
+                ];
+                
+                // Replace specific phrases first
+                phraseReplacements.forEach(pair => {
+                    const regex = new RegExp(pair.original, "gi");
+                    text = text.replace(regex, pair.slang);
+                });
+                
+                // Replace individual words
+                const words = text.split(/\s+/);
+                const convertedWords = words.map(word => {
+                    const lowerCaseWord = word.toLowerCase().replace(/[^\w\s]/gi, ''); // Remove punctuation for matching
+                    if (slangDictionary[lowerCaseWord]) {
+                        return slangDictionary[lowerCaseWord];
+                    } else if (shortenings[lowerCaseWord]) {
+                        return shortenings[lowerCaseWord];
+                    } else {
+                        return word;
+                    }
+                });
+                
+                // Add random interjections and emojis
+                if (Math.random() > 0.5) {
+                    convertedWords.push(interjections[Math.floor(Math.random() * interjections.length)]);
+                }
+                if (Math.random() > 0.5) {
+                    convertedWords.splice(Math.floor(Math.random() * convertedWords.length), 0, emojis[Math.floor(Math.random() * emojis.length)]);
+                }
+                
+                // Convert text back to a string and insert emojis/punctuation
+                let genZText = convertedWords.join(' ');
+                
+                // Randomly replace some punctuation with Gen-Z equivalents
+//              genZText = genZText.replace(/\!/g, "!!")
+//              .replace(/\./g, "...")
+//              .replace(/\?/g, "?!?");
+//
+                return genZText;
+            }
+            
+            document.addEventListener("DOMContentLoaded", () => {
+                const source = document.getElementById('text_area');
+                const result = document.getElementById('result');
+                
+                
+                const inputHandler = function(e) {
+                    result.innerHTML = convertToGenZSlang(e.target.value);
+                }
+                
+                source.placeholder = convertToGenZSlang("Type something here.");
+                result.innerText = convertToGenZSlang("Im waiting here for your messages.");
+                
+                source.addEventListener('input', inputHandler);
+            });
+        </script>
+        <style>
+            .stack * {
+                margin: 0;
+            }
+            .stack {
+                margin: 20px;
+            }
+            p, h1 {
+                color: #5c5c5c;
+            }
+            input {
+                margin: auto;
+                width: calc(100% - 60px);
+                max-width: 800px;
+                display: block;
+                padding: 10px 30px;
+                border-radius: 20px;
+                border: 1px solid #5c5c5c;
+                font-size: 16px;
+                font-weight: 600;
+            }
+            .from-me img, .from-me iframe {
+                position: relative;
+                z-index: 100;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                max-width: 300px;
+                display: flex;
+                margin: auto;
+                border-radius: 15px;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <div class="stack">
+            <h1>Zenify</h1>
+            <p>Convert anything you type into gen-z slang.</p>
+        </div>
+        <br>
+        <div class="imessage">
+            <p id="result" class="from-me">...</p>
+        </div>
+        <input id="text_area" type="text" placeholder="Type something here!">
+    </body>
+    <footer>
+<!--    Styling stolen from: https://codepen.io/AllThingsSmitty/pen/jommGQ-->
+    </footer>
+</html>
+
